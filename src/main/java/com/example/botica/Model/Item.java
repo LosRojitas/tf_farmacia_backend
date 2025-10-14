@@ -1,4 +1,4 @@
-package com.example.botica.model;
+package com.example.botica.Model;
 
 import javax.persistence.*;
 import java.time.LocalDate;

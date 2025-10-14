@@ -1,4 +1,4 @@
-package com.example.botica.model;
+package com.example.botica.Model;
 
 import javax.persistence.*;
 
@@ -8,6 +8,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String contrasenia;
     private String nombre;
     private String correo;
     private String dni;
@@ -42,5 +43,13 @@ public class Usuario {
 
     public void setDni(String dni) {
         this.dni = dni;
+    }
+
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 }

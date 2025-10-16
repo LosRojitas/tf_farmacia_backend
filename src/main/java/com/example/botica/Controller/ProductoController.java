@@ -15,19 +15,22 @@ import java.util.List;
 public class ProductoController {
 
     @Autowired
-    private ProductoService ProductoService;
+    private ProductoService productoService;
+
     @Autowired
-    private ProductoRepository ProductoRepository;
+    private ProductoRepository productoRepository;
 
-    @PostMapping("/guardar_producto")
-    public Producto guardarProducto(@RequestBody Producto producto) {
-        return ProductoService.guardarProducto(producto);
+    // Si usas @GeneratedValue en Producto.id, NO envíes "id" aquí.
+    @PostMapping("/guardarproducto")
+    public String guardarProducto(@RequestParam String nombre_producto,
+                                  @RequestParam Long categoriaId,
+                                  @RequestParam int cantidad,
+                                  @RequestParam String procedencia) {
+        return productoService.guardarProducto(nombre_producto, categoriaId, cantidad, procedencia);
     }
-
 
     @GetMapping("/listar")
-    public List<Producto> listarProductos() {
-        return ProductoRepository.findAll();
+    public List<Producto> listarProducto() {
+        return productoRepository.findAll();
     }
-
 }

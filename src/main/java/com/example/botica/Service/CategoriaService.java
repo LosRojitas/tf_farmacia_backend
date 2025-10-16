@@ -13,11 +13,11 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    public String guardarCategoria(Long categoria_id, String tipo_categoria, String descripcion_categoria) {
+    public String guardarCategoria( String tipo_categoria, String descripcion_categoria) {
 
         Categoria categoria_nuevo = new Categoria();
 
-        categoria_nuevo.setId(categoria_id);
+
         categoria_nuevo.setTipo_categoria(tipo_categoria);
         categoria_nuevo.setDescripcion_categoria(descripcion_categoria);
         categoriaRepository.save(categoria_nuevo);

@@ -28,9 +28,9 @@ public class CategoriaController {
 
 
     @PostMapping("/guardarcategoria")
-    public String guardarCategoria(@RequestParam Long categoria_id, @RequestParam String tipo_categoria, @RequestParam String descripcion_categoria)
+    public String guardarCategoria(@RequestParam String tipo_categoria, @RequestParam String descripcion_categoria)
     {
-        return categoriaService.guardarCategoria(categoria_id, tipo_categoria, descripcion_categoria);
+        return categoriaService.guardarCategoria( tipo_categoria, descripcion_categoria);
     }
 
 

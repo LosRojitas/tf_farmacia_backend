@@ -1,34 +1,33 @@
 package com.example.botica.Controller;
 
+import com.example.botica.Model.Item;
 import com.example.botica.Model.Producto;
-import com.example.botica.Service.ProductoService;
 import com.example.botica.Repository.ProductoRepository;
+import com.example.botica.Service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/producto")
+@RequestMapping("/productos")
+@CrossOrigin(origins = { "http://127.0.0.1:5500", "http://localhost:5500" })
 public class ProductoController {
 
     @Autowired
-    private ProductoService productoService;
-
+    private ProductoService ProductoService;
     @Autowired
-    private ProductoRepository productoRepository;
+    private ProductoRepository ProductoRepository;
 
-    // Si usas @GeneratedValue en Producto.id, NO envíes "id" aquí.
-    @PostMapping("/guardarproducto")
-    public String guardarProducto(@RequestParam String nombre_producto,
-                                  @RequestParam Long categoriaId,
-                                  @RequestParam int cantidad,
-                                  @RequestParam String procedencia) {
-        return productoService.guardarProducto(nombre_producto, categoriaId, cantidad, procedencia);
+    @PostMapping("/guardar_producto")
+    public Producto guardarProducto(@RequestBody Producto producto) {
+        return ProductoService.guardarProducto(producto);
     }
 
-    @GetMapping("/listarproducto")
-    public List<Producto> listarProducto() {
-        return productoRepository.findAll();
+
+    @GetMapping("/listar")
+    public List<Producto> listarProductos() {
+        return ProductoRepository.findAll();
     }
+
 }

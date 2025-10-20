@@ -29,12 +29,4 @@ public class UsuarioService {
 
         return "Usuario guardado: " + correo;
     }
-
-    public boolean login(String correo, String contrasenia){
-
-
-
-        return true;
-
-    }
 }

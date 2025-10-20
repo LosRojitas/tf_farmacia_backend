@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -31,10 +30,6 @@ public class ProductoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    /**
-     * Guarda un producto y, automáticamente, crea un Item asociado con ese producto.
-     * El Item se crea vacío (solo con la referencia al producto).
-     */
     @Transactional
     public String guardarProducto(String nombre_producto, Long categoriaId, int cantidad, String procedencia, String fecha_vencimiento) {
 
@@ -60,11 +55,10 @@ public class ProductoService {
         // 3) Crear Item automáticamente y asociarlo al producto recién creado
         Item itemAuto = new Item();
         itemAuto.setProducto(productoGuardado);
-        // Si quieres forzar valores por defecto, descomenta:
         itemAuto.setCantidad_item(cantidad);
         itemAuto.setFecha_registro(fecha_registro);
         itemAuto.setFecha_vencimiento(vencimientoFormateado);
-        itemAuto.setUsuario(usuario); // Déjalo null si no quieres asignarlo aún
+        itemAuto.setUsuario(usuario);
 
         Item itemGuardado = itemRepository.save(itemAuto);
 

@@ -1,14 +1,14 @@
 package com.example.botica.Controller;
 
-import com.example.botica.Model.Item;
-import com.example.botica.Model.Producto;
-import com.example.botica.Repository.ItemRepository;
-import com.example.botica.Repository.ProductoRepository;
 import com.example.botica.Service.ProductoService;
+import com.example.botica.web.dto.producto.ActualizarProductoRequestDto;
+import com.example.botica.web.dto.producto.EliminarProductoResponseDto;
+import com.example.botica.web.dto.producto.GuardarProductoResponseDto;
+import com.example.botica.web.dto.producto.ProductoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,42 +19,29 @@ public class ProductoController {
     @Autowired
     private ProductoService productoService;
 
-    @Autowired
-    private ProductoRepository productoRepository;
-
-    @Autowired
-    private ItemRepository itemRepository;
-
-    /**
-     * Guarda un nuevo producto y crea automáticamente un Item asociado.
-     */
     @PostMapping("/guardarproducto")
-    public String guardarProducto(@RequestParam String nombre_producto,
-                                  @RequestParam Long categoriaId,
-                                  @RequestParam int cantidad,
-                                  @RequestParam String procedencia,
-                                  @RequestParam String fecha_vencimiento
-    )
-
-
-
-    {
+    public GuardarProductoResponseDto guardarProducto(@RequestParam String nombre_producto,
+                                                      @RequestParam Long categoriaId,
+                                                      @RequestParam int cantidad,
+                                                      @RequestParam String procedencia,
+                                                      @RequestParam String fecha_vencimiento) {
         return productoService.guardarProducto(nombre_producto, categoriaId, cantidad, procedencia, fecha_vencimiento);
     }
 
-    /**
-     * Lista todos los productos existentes.
-     */
-    @GetMapping("/listar")
-    public List<Producto> listarProducto() {
-        return productoRepository.findAll();
+    @PutMapping("/editar/{id}")
+    public ProductoDto editarProducto(@PathVariable Long id,
+                                      @RequestBody @Valid ActualizarProductoRequestDto body) {
+        return productoService.actualizarProducto(id, body);
     }
 
-    /**
-     * Endpoint de prueba: lista todos los Items para verificar si se creó el id_producto.
-     */
-    @GetMapping("/ver_items")
-    public List<Item> verItems() {
-        return itemRepository.findAll();
+    @DeleteMapping("/eliminar/{id}")
+    public EliminarProductoResponseDto eliminarProducto(@PathVariable Long id) {
+        return productoService.eliminarProducto(id);
     }
+
+    @GetMapping("/listar")
+    public List<ProductoDto> listarProducto() {
+        return productoService.listarProductos();
+    }
+
 }

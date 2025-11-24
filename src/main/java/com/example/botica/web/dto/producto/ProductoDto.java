@@ -20,7 +20,7 @@ public class ProductoDto implements Serializable {
     private CategoriaDto categoria;
     private int cantidad;
     private String procedencia;
-
+//.
     public ProductoDto() {
 
     }

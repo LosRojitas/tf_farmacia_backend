@@ -2,16 +2,16 @@ package com.example.botica.Model;
 
 import javax.persistence.*;
 
-@Entity
+@Entity //anotacion que marca esta clase como una entidad de db
 public class Producto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // anotacion que define ID como una primary key de la entidad producto.
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //el valor id se genera automaticamente
     private Long id;
 
     private String nombre_producto;
 
-    @ManyToOne
+    @ManyToOne //anotacion que establece una relación de muchos productos a una categoría.
     private Categoria categoria;
 
     private int cantidad;

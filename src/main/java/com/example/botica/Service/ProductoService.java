@@ -7,8 +7,11 @@ import com.example.botica.web.dto.producto.ProductoDto;
 
 import java.util.List;
 
-public interface ProductoService {
-    GuardarProductoResponseDto guardarProducto(String nombre_producto,
+public interface ProductoService // Define la interfaz 'ProductoService'
+
+{
+    GuardarProductoResponseDto guardarProducto(String nombre_producto,//Define el método 'guardarProducto', que guarda
+                                               // un nuevo producto en el sistema. Devuelve un DTO con la respuesta.
                                                Long categoriaId,
                                                int cantidad,
                                                String procedencia,

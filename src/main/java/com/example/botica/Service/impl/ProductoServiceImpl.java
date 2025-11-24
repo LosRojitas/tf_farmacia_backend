@@ -15,36 +15,41 @@ import com.example.botica.web.dto.producto.ActualizarProductoRequestDto;
 import com.example.botica.web.dto.producto.EliminarProductoResponseDto;
 import com.example.botica.web.dto.producto.GuardarProductoResponseDto;
 import com.example.botica.web.dto.producto.ProductoDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired; //. Importamos la anotación para la inyección de dependencias de Spring.
+import org.springframework.stereotype.Service; //Importamos la anotación para declarar que esta clase es un servicio gestionado por Spring.
+import org.springframework.transaction.annotation.Transactional; //Importamos la anotación que marca métodos para ser ejecutados dentro de una transacción.
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;  // 20. Importamos 'LocalDate' para trabajar con fechas.
+import java.time.format.DateTimeFormatter;// 21. Importamos  'DateTimeFormatter' para formatear fechas.
+import java.util.ArrayList; // Importamos la clase 'ArrayList' para crear listas dinámicas.
+import java.util.List; // 23. Importamos  'List' para trabajar con listas.
 
-@Service
-public class ProductoServiceImpl implements ProductoService {
+@Service // Declaramos que esta clase es un servicio gestionado por Spring.
+public class ProductoServiceImpl implements ProductoService // 25. La clase 'ProductoServiceImpl' implementa la interfaz 'ProductoService'
+{
 
-    private final ProductoRepository productoRepository;
+    private final ProductoRepository productoRepository; // 26. Declaramos una referencia al repositorio de 'Producto', que
+    // interactúa con la base de datos.
     private final CategoriaRepository categoriaRepository;
     private final ItemRepository itemRepository;
     private final UsuarioRepository usuarioRepository;
 
-    @Autowired
+    @Autowired //Inyectamos las dependencias necesarias en el constructor.
     public ProductoServiceImpl(ProductoRepository productoRepository,
                                CategoriaRepository categoriaRepository,
                                ItemRepository itemRepository,
-                               UsuarioRepository usuarioRepository) {
+                               UsuarioRepository usuarioRepository)
+    {
         this.productoRepository = productoRepository;
         this.categoriaRepository = categoriaRepository;
         this.itemRepository = itemRepository;
         this.usuarioRepository = usuarioRepository;
     }
-
+    //.
     @Override
-    @Transactional
+    @Transactional // asegura que si alguna operación falla, todas las demás operaciones sean deshechas,
+
+    //metodo guardar producto
     public GuardarProductoResponseDto guardarProducto(String nombre_producto,
                                                       Long categoriaId,
                                                       int cantidad,
@@ -56,25 +61,28 @@ public class ProductoServiceImpl implements ProductoService {
         Categoria categoria = categoriaRepository.findById(categoriaId)
                 .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada: " + categoriaId));
 
-        List<Usuario> usuarios = usuarioRepository.findAll();
+
+        List<Usuario> usuarios = usuarioRepository.findAll(); // Recupera todos los usuarios desde la base de datos.
         if (usuarios.isEmpty()) {
             throw new IllegalStateException("No hay usuarios registrados.");
         }
+        // Selecciona el primer usuario de la lista de usuarios.
         Usuario usuario = usuarios.get(0);
 
+        // Obtiene la fecha actual  de registro
         LocalDate fecha_registro = LocalDate.now();
 
-        // 1) Crear producto SIN tocar cantidad
+        //Crear producto SIN tocar cantidad
         Producto nuevoProducto = new Producto();
         nuevoProducto.setNombre_producto(nombre_producto);
         nuevoProducto.setCategoria(categoria);
         nuevoProducto.setProcedencia(procedencia);
 
-        nuevoProducto.setCantidad(0);
+        nuevoProducto.setCantidad(0); // Inicializa la cantidad en 0, ya que la cantidad real se manejará en los items.
 
         Producto productoGuardado = productoRepository.save(nuevoProducto);
 
-        // 2) Crear el primer item (la cantidad recibida pertenece al item)
+        // Crear un item relacionado con el producto recién creado
         Item itemAuto = new Item();
         itemAuto.setProducto(productoGuardado);
         itemAuto.setCantidad_item(cantidad);
@@ -84,7 +92,7 @@ public class ProductoServiceImpl implements ProductoService {
 
         Item itemGuardado = itemRepository.save(itemAuto);
 
-        // 3) Recalcular la cantidad del producto según sus items
+        // Recalcular la cantidad del producto según sus items
         actualizarCantidadEnProducto(productoGuardado.getId());
 
         GuardarProductoResponseDto dto = new GuardarProductoResponseDto();
@@ -96,8 +104,11 @@ public class ProductoServiceImpl implements ProductoService {
 
 
     @Override
-    @Transactional(readOnly = true)
-    public List<ProductoDto> listarProductos() {
+    @Transactional(readOnly = true)   // Indica que este método solo realiza operaciones de lectura en la base de datos
+    //devuelve lista de productos en format dto
+    public List<ProductoDto> listarProductos()
+
+    {
         List<Producto> productos = productoRepository.findAll();
         List<ProductoDto> respuesta = new ArrayList<>(productos.size());
         for (Producto p : productos) {
